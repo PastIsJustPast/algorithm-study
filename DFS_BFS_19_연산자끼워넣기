@@ -1,0 +1,48 @@
+import itertools
+from collections import deque
+
+n = int(input())
+num = list(map(int,input().split()))
+w= list(map(int,input().split()))
+
+
+#연산자 조합의 경우의수
+space = []  # 0 : +, 1 : -, 2 : *, 3: /
+for i in range(4):
+    for j in range(w[i]):
+        space.append(i) #연산자
+
+operators = []
+for info in itertools.permutations(space,5): #중복을 허용해 연산자 경우의 수를 조합함
+    if list(info) not in operators:
+        operators.append(list(info))
+
+
+def solution():
+    min_sum = 1e9
+    max_sum = -1e9
+    for operator in operators: #연산자 조합
+        q = deque(num)  # 큐에 전체 숫자를 담음
+        sum = q.popleft() #첫 숫자 하나 꺼냄
+        for i in operator : #연산자 조합에서 연산자를 하나씩 호출/ 총 n-1번의 작업
+            value= q.popleft() # 다음 연산될 숫자를 호출
+            if i == 0 :
+                sum += value
+            if i == 1 : 
+                sum -= value
+            if i == 2:
+                sum *= value
+            if i ==3 :
+                if sum >= 0 :
+                    sum = sum//value
+                if sum < 0 :
+                    sum = -(-sum//value)
+        
+        print(operator, sum)
+        min_sum = min(min_sum,sum)
+        max_sum = max(max_sum,sum)
+        
+    return min_sum,max_sum
+
+solution()        
+                
