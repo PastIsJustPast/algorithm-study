@@ -1,0 +1,59 @@
+import itertools
+n = int(input())
+graph = []
+for _ in range(n):
+    graph.append(list(map(str,input().split())))
+
+#선생님과 학생 위치, 빈공간을 따로 탐색함 -> 전체 탐색 양을 줄여줌
+students = []
+teachers = []
+space = []
+for i in range(n):
+    for j in range(n):
+        if graph[i][j] == "S":
+            students.append([i,j])
+        if graph[i][j] == "T":
+            teachers.append([i,j])
+        if graph[i][j] == "X":
+            space.append([i,j])
+
+temp = [["X"] * n for _ in range(n)]
+
+#들킴 여부 출력 함수 
+def search_students(x,y):
+    dx = [-1,1,0,0]
+    dy = [0,0,1,-1]
+    for i in range(4):
+        for m in range(1,n) :  # 한칸, 두칸, 세칸 늘려가며 감시가능
+            nx = x + dx[i] * m
+            ny = y + dy[i] * m
+            if nx < 0 or nx >=n or ny <0 or ny >= n :
+                continue
+            if temp[nx][ny] == "O":
+                break # 만약 장애물 만나면 그 방향에서의 탐색은 끝내야함
+            if [nx,ny] in students : # 탐색 범위를 줄일 수 있음
+                return True # 감시성공
+    return False # 감시 실패
+
+search_students(0,3)
+
+
+def solution() :
+    for info in itertools.combinations(space,3) : #빈칸 중 세개를 임의로 뽑음
+        #임의 그래프 생성
+        for i in range(n):
+            for j in range(n):
+                temp[i][j] = graph[i][j]
+        #장애물 설치
+        for i,j in info :
+            temp[i][j] = "O"
+
+        #학생 감시
+        for x,y in teachers :
+            count = 0
+            if search_students(x,y) == False : # 감시를 피함
+                count += 1
+            if count == len(teachers): #3개를 설치하고 모든 선생님의 감시를 피할경우
+                return print("yes")
+    return print("No") # 모든 경우의 수에 대해 감시를 피하지 못함
+
