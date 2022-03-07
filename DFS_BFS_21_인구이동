@@ -1,0 +1,59 @@
+from collections import deque
+n,l,r = map(int,input().split())
+graph = []
+for _ in range(n) :
+    graph.append(list(map(int,input().split())))
+
+dx = [0,0,1,-1]
+dy = [1,-1,0,0]
+
+def process(x,y,index):
+    #x,y와 연합된 나라를 저장
+    united = []
+    united.append((x,y))
+
+    #bfs를 위한 사전 정의
+    q = deque()
+    q.append((x,y))
+    union[x][y] = index #연합번호를 할당/ 이후에 정의할 것
+    sum = graph[x][y] #연합의 인구수 합
+    count = 1 # 연합에 속한 국가
+
+    #bfs시작
+    while q :
+        x,y = q.popleft()
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if  0 <= nx < n and 0 <= ny < n and union[nx][ny] == -1  :
+            #조건에 맞으면 이웃 국가를 연합에 추가
+                if l <= abs(graph[x][y] - graph[nx][ny]) <= r :
+                    q.append((nx,ny)) # 다음탐색을 위해 큐에 추가
+                    union[nx][ny] = index #연합 번호 부여
+                    sum += graph[nx][ny]
+                    count += 1
+                    united.append((nx,ny)) # 연합에 추가
+
+    #연합 구성이 끝나고나면 인구수 배분
+    for i,j in united:
+        graph[i][j] = sum//count
+    return count
+
+process(0,0,1)
+graph
+
+
+total = 0
+# 더 이상 인구이동 없을 떄 까지 반복
+while True :
+    union = [[-1] * n for _ in range(n)]
+    index = 0
+    for i in range(n):
+        for j in range(n):
+            if union[i][j] == -1 : #그 국가가 어느 연합에 속해있지 않다면
+                process(i,j,index)
+            index += 1
+    if index == n*n :
+        break
+    total += 1
+print(total)
