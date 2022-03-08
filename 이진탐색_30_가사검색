@@ -1,0 +1,44 @@
+from bisect import bisect_left, bisect_right
+words = list(map(str,input().split()))
+queries = list(map(str,input().split()))
+
+#단어 원소의 길이가 10000임. 그리고 길이가 맞아야하니 단어 길이에 따라 리스트를 달리해주면 불필요한 탐색 줄일 수 있음
+#쿼리의 한 단어를 뽑고 문자열+a ~ 문자열 +z에 해당하는 단어의 갯수를 count하면 된다
+#대신 접두사에?가 들어간 경우 단어도 쿼리도 모두 반대로 뒤집으면 탐색이 가능하다
+
+
+#길이별 단어를 저장할 공간
+space = [[] for _ in range(10001)]  #단어길이가 최대 10000
+reverse_space = [[] for _ in range(10001)]
+
+#길이별 단어 저장
+for i in range(len(words)) :
+    space[len(words[i])].append(words[i]) # i번쨰 단어의 길이에 해당하는 곳으로 삽입
+    reverse_space[len(words[i])].append(words[i][::-1]) #뒤로 집어 넣기
+
+#단어정렬
+for i in range(10001):
+    space[i].sort()
+    reverse_space[i].sort()
+
+#단어 갯수 찾기
+def search_words(temp,left_value,right_value):
+    left_index = bisect_left(temp,left_value)
+    right_index = bisect_right(temp,right_value)
+    return right_index - left_index
+
+
+
+
+def solution():
+    result = []
+    for q in queries :
+        if q[0] != "?" :
+            count = search_words(space[len(q)],q.replace("?","a") , q.replace("?","z"))  #쿼리의 단어와 단어길이가 똑같은 곳만 탐색하면 됨
+            result.append(count)
+        else :
+            count = search_words(reverse_space[len(q)], q[::-1].replace("?","a"),q[::-1].replace("?","z"))
+            result.append(count)
+    return result
+
+solution()
