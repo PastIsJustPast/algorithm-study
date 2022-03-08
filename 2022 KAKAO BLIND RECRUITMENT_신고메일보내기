@@ -1,0 +1,37 @@
+id_list =["muzi", "frodo", "apeach", "neo"]
+report= ["muzi frodo","apeach frodo","frodo neo","muzi neo","apeach muzi"]
+k = 2
+
+
+
+def solution(id_list, report, k):
+    answer = [0] * len(id_list)
+    dic_report = {id: [] for id in id_list} # 해당 유저를 신고한 ID
+    for i in set(report):
+        i = i.split()
+        dic_report[i[1]].append(i[0])
+
+    for key, value in dic_report.items():
+        if len(value) >= k:
+            for j in value: #신고한사람 한명씩 꺼내서
+                answer[id_list.index(j)] += 1  #신고한사람 인덱스에 그 값 삽입
+
+    return answer
+
+solution(id_list,report,k)
+
+
+# 딕셔너리 함수
+{id : [] for id in id_list} 와 같이 잘 쓰이는 문법임
+id는 key []은 value
+
+이때 dic.items()는 for문과 함께 자주 쓰이는데
+0에는 key, 1에는 values를 리스트로 반환함
+
+# set함수
+set은 리스트 안에서 중복되는 값 없게 함
+기본함수라서 쓰면 됨
+
+#list.index(value)
+리스트 안에서 value가 있는 위치를 찾아냄
+
