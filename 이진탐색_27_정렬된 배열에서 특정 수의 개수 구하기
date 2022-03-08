@@ -1,0 +1,16 @@
+n,x = map(int,input().split())
+array = list(map(int,input().split()))
+
+from bisect import bisect_left, bisect_right  #이진탐색을 통해 정렬된 배열에서 특정 값의 가장 왼쪽 인덱스를 출력
+
+def search_count(array,x) :
+    left = bisect_left(array,x)
+    right =bisect_right(array,x)
+    return right-left  #array에서 x의 인덱스 왼쪽과 오른쪽을 찾아주고, 그 차이를 호출하면 그 값은 x의 갯수가 됨
+search_count(array,4)  
+
+if search_count(array,x) != 0 :
+    print(search_count(array,x))
+else :print(-1)
+
+
