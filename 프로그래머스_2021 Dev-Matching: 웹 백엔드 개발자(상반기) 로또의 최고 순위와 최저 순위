@@ -1,0 +1,52 @@
+### 다른 풀이
+def solution(lottos, win_nums):
+
+    rank=[6,6,5,4,3,2,1]
+
+    cnt_0 = lottos.count(0)
+    ans = 0
+    for x in win_nums:
+        if x in lottos:
+            ans += 1
+    return rank[cnt_0 + ans],rank[ans]
+    
+    
+### 내풀이
+def solution(lottos, win_nums):
+    answer = []
+    #0이 아닌 로또 번호
+    nonzero = []
+    for i in range(6):
+        if lottos[i] != 0 : 
+            nonzero.append(lottos[i])
+    #0의 갯수
+    zero_count = 6 - len(nonzero)
+    
+    #nonzero중에 당첨번호와 겹치는 수
+    win_count =0
+    for j in range(len(nonzero)) : 
+        if nonzero[j] in win_nums : 
+            win_count += 1
+    
+    #최대 최소
+    max_count = win_count + zero_count
+    min_count = win_count
+    
+    #등수
+    for i in [max_count,min_count]:
+        if i >= 2 :
+            answer.append(7-i)
+        else : 
+            answer.append(6)
+    
+    return answer
+    
+    
+    
+    
+    
+    
+    # 차이점
+    0의 갯수를 찾기 위해선 list.count()를 사용해도 됨
+    rank는 고정된 값이기 때문에 index와 연관지어 생각할 수 잇음
+    lottos의 0은 어차피 win_num에 없기 때문에 따로 제거해서 생각할 필요 없음
