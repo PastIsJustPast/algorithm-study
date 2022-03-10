@@ -1,0 +1,26 @@
+## 내가 짠 코드
+
+import heapq
+def solution(scoville, K):
+    answer = 0
+    heapq.heapify(scoville)  # 정렬이 안 되어 있을 수도 있기 때문에 heapify로 힙큐 구조로 바꿔야함
+    while scoville:  
+        # 음식 확인
+        f=heapq.heappop(scoville)
+        if f >= K :
+            break
+        if len(scoville) == 0:   #힙이 비었을 경어 리턴해줄 필요 있음
+            return -1
+        s=heapq.heappop(scoville)
+        
+        #섞어 넣기
+        heapq.heappush(scoville,f+s*2)
+        answer += 1
+        
+    return answer
+    
+    
+   #힙구조는 일반적으로 솔트보다 빠르다.
+   힙큐로 풀 문제가 안풀린다면 대부분 다른 쪽에서 문제가 생기는 상황
+   
+   정렬은 시간이 많일걸리기 때문에 저장과 시간을 최소로 
