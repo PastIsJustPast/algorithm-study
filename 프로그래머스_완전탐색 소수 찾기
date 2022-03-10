@@ -1,0 +1,31 @@
+import itertools
+def solution(numbers):
+    answer = 0
+    
+    #숫자 만들기
+    temp =[]
+    for i in range(1,len(numbers) +1 ): #1부터 그 자릿수까지
+        for info in itertools.permutations(numbers,i):
+            num = ""
+            for i in info:
+                num += i
+            if num[0] != "0":
+                temp.append(int(num))
+    
+    #확인하기
+    for num in set(temp): 
+        count = 0
+        if num != 1:
+            for j in range(2,num):
+                if num % j == 0:
+                    count += 1
+            if  count == 0 : 
+                answer +=1 
+        
+    return answer
+
+
+
+
+
+
