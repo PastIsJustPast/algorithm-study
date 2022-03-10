@@ -1,0 +1,31 @@
+#내풀이
+def solution(s):
+    answer = ""
+    number = {"zero" :0, "one":1,"two" :2,"three":3, "four":4 ,"five":5,"six":6,"seven":7,"eight":8,"nine":9}
+    text=""
+    
+    for i in s:
+        if i.isdigit() : 
+            answer += str(i)
+        elif i.isalpha() : 
+            text += i
+        # 텍스트에 숫자가 완성 되면
+        if text in number: 
+            answer += str(number[text])
+            text = "" #다시 초기화
+            
+    answer = int(answer)
+    return answer
+    
+ #다른사람 풀이
+ num_dic = {"zero":"0", "one":"1", "two":"2", "three":"3", "four":"4", "five":"5", "six":"6", "seven":"7", "eight":"8", "nine":"9"}
+
+def solution(s):
+    answer = s
+    for key, value in num_dic.items():
+        answer = answer.replace(key, value)
+       
+    return int(answer)
+
+#replace함수를 통해서 쉽게 대체 할 수 있다/
+replace함수와 dic구조를 통해서 다양한 문자열을 한번에 고칠 수 있다.
