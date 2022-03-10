@@ -1,0 +1,45 @@
+# 내풀이
+def solution(record):
+    answer = []
+    nicknames = {}
+    logs =[]
+    
+    for info in record:
+        if len(info.split()) == 3 :
+            rec,name,nick = info.split()
+            nicknames[name]  = nick #변경을 하던 나갔다 들어오던 무조건 마지막에 찍히는 닉네임이 그 닉네임임
+            if rec !="Change":
+                logs.append((name,rec)) 
+        else :
+            rec,name = info.split()
+            logs.append((name,rec)) 
+
+            
+    #호출
+    act = {"Enter" : "들어왔습니다.", "Leave" : "나갔습니다."}
+    for log in logs:
+        res = ""
+        res = "{}님이 {}".format(nicknames[log[0]],act[log[1]])
+        answer.append(res)    
+
+    return answer
+    
+
+##다른사람 풀이
+    def solution(record):
+    answer = []
+    namespace = {}
+    printer = {'Enter':'님이 들어왔습니다.', 'Leave':'님이 나갔습니다.'}
+    for r in record:
+        rr = r.split(' ')
+        if rr[0] in ['Enter', 'Change']:  # 입장이나 변환이면 딕셔너리에 바꿈
+            namespace[rr[1]] = rr[2]
+
+    for r in record:
+        if r.split(' ')[0] != 'Change': 
+            answer.append(namespace[r.split(' ')[1]] + printer[r.split(' ')[0]])
+
+    return answer
+    
+    
+    
