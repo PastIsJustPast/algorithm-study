@@ -1,0 +1,19 @@
+def solution(numbers, target):
+    answer = 0
+    count = 0
+    def dfs(numbers,value,index,target) :
+        nonlocal count  # 함수 안에서 함수만들때 바로 밖에 있는 객체를 그대로 쓰겠다는 뜻
+        if index >= len(numbers): # 끝까지 연산이 끝났을 때 값을 봐야함
+            if value == target:
+                count += 1
+            return count
+        plus = value + numbers[index]
+        minus = value - numbers[index]
+
+        dfs(numbers,plus,index + 1, target)  #재귀적으로 불러옴
+        dfs(numbers,minus,index + 1, target)
+    
+    dfs(numbers,0,0,target)
+    answer = count
+    
+    return answer
