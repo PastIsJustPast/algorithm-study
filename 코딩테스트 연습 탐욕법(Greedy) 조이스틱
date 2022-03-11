@@ -1,0 +1,48 @@
+def search_count(dic,i) :
+    count = 0
+    count += dic[i]
+    return count
+
+def solution(name):
+    answer = 0
+    #알파벳 집합 만들기
+    alpha = list("OPQRSTUVWXYZABCDEFGHIJKLMN")
+    index = -12
+    dic = {i: 0 for i in alpha}
+    for i in alpha:
+        dic[i] = abs(index)
+        index += 1
+    #알파벳 찾을 때 위아래 횟수
+    for i in name:
+        answer += search_count(dic,i)
+    #움직이 횟수 찾기// 끝까지 다가거나 남은글자가 다 A이면 끝! 0:len(name)과
+
+    if name == "A" * len(name) : #처음부터 맞다면
+        a = 0
+    else : #아니라면 최소 한번은 움직여야함
+        a = 0
+        for i in range(1,len(name)) :
+            if name[i:] != "A" *(len(name)-i) : #만약에 다음번부터 나머지가 전부 A라면? 이동 필요없음
+                a += 1
+
+    if name == "A" * len(name):  # 처음부터 맞다면
+        b = 0
+    else:  # 아니라면 최소 한번은 움직여야함
+        b = 0
+        reverse = ""
+        for i in range(0,-len(name),-1):
+            reverse += name[i]
+        for i in range(1, len(reverse)):
+            if reverse[i:] != "A" * (len(reverse) - i):  # 만약에 다음번부터 나머지가 전부 A라면? 이동 필요없음
+                b+= 1
+
+    answer += min(a,b)
+
+    return answer
+
+solution("JEROEN")
+
+
+
+
+
