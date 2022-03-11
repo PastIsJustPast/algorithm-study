@@ -1,0 +1,38 @@
+#내가 푼것
+
+def search_brown(brown, i, j):
+    if (i + 2) * 2 + j * 2 == brown:
+        return [j + 2, i + 2]
+    return False
+
+
+def solution(brown, yellow):
+    answer = []
+
+    # yellow 사각형 조합 찾기
+    if yellow == 1:
+        answer = [3, 3]
+    else:
+        for i in range(1, yellow // 2 + 1):  # 열이 길어야함
+            if yellow % i == 0:  # 나누어 떨어진다면,
+                j = yellow // i
+                if i > j:
+                    break  # i가 j보다 작으면 더이상 i 찾을 필요 없음
+                temp = search_brown(brown, i, j)
+                print(temp)
+                if temp != False: # 예외처리 안해주면 오류생김
+                    answer = temp
+                
+
+    return answer
+    
+ #완전탐색의 경우 예외 및 오류처리 안해주면 케이스에서는 맞지만 실제론 틀릴 수 있음
+ 
+ 
+ 
+#다른사람 풀이 
+ def solution(brown, red):
+    for i in range(1, int(red**(1/2))+1): #제일 작은 약수는 sqrt에 가깝기 때문에 저렇게 설정함
+        if red % i == 0:
+            if 2*(i + red//i) == brown-4: # 조건맞으면 바로 return해서 끝내도 됨. 불필요한 연산 줄인다.
+                return [red//i+2, i+2]
