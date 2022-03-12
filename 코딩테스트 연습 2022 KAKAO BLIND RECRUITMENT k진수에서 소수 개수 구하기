@@ -46,3 +46,16 @@ def solution(n, k):
  - 0을 양단쪽으로 포함하는 소수이므로 0으로 구분해라는 말과 같음
  - 0을 기준으로 모두 슬라이싱 한다음 
  - 0을 ""으로 대체하여 남은 숫자가 소수인지 판단하여 횟수를 세면 됨
+
+
+##다른사람 풀이
+def solution(n,k) :
+    answer = 0
+    num = ten2k(n,k)
+    for info in num.split("0"): #으로 구분하기
+        if info !="":
+            if check_prime(int(info)) ==True:
+                answer +=1
+    return answer
+
+
