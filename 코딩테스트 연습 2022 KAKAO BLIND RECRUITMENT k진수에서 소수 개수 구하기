@@ -1,0 +1,48 @@
+def ten2k(n,q):
+    rev_base = ''
+    while n > 0:
+        n, mod = divmod(n, q)
+        rev_base += str(mod)
+    return rev_base[::-1]
+
+def check_prime(number):
+    if number <=1 :
+        return False
+    for i in range(2,number-1):
+        if number %  i == 0 : #나누어떨어지면
+            return False
+    return True
+
+def solution(n, k):
+    answer = 0
+    num = ten2k(n,k)
+    space = []
+    #0으로 자르기
+    f = 0
+    b = 0
+    while f < len(num):
+        if num[f] != "0" :
+            f +=1
+        elif num[f] == "0" :
+            space.append(num[b:f+1]) #그 0까지 포함, 0으로만 이루어진 것도 포함됨을 알아야함
+            b = f #다시 b에 를 저장
+            f +=1
+        if f == (len(num) - 1):
+            space.append(num[b:f + 1])
+
+    for info in space:
+        info = info.replace("0","")
+        if info != "":
+            if check_prime(int(info)) == True:
+                answer += 1
+
+    return answer
+    
+    
+    
+    
+    
+ #풀이로직
+ - 0을 양단쪽으로 포함하는 소수이므로 0으로 구분해라는 말과 같음
+ - 0을 기준으로 모두 슬라이싱 한다음 
+ - 0을 ""으로 대체하여 남은 숫자가 소수인지 판단하여 횟수를 세면 됨
