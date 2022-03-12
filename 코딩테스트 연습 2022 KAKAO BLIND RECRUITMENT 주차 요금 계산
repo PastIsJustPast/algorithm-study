@@ -1,0 +1,63 @@
+import math
+
+def diff_time(b,f):
+    b = list(map(int,b.split(":")))
+    f = list(map(int,f.split(":")))
+    if b[1] > f[1] :
+        return (f[0]-b[0]-1) * 60 + 60 - (b[1] - f[1])
+    else :
+        return (f[0]-b[0]) * 60 + f[1]-b[1]
+
+def price(t,fees):
+    if t <= fees[0] :
+        return fees[1]
+    else :
+        t -= fees[0]
+        return math.ceil(t/fees[2]) * fees[3] + fees[1]
+
+
+
+def solution(fees, records):
+    answer = []
+    name = {} # 출발시간 기록
+    parking = {}
+    time = {} # 하루종일 움직인 시간 기록
+
+    for info in records:
+        a,b,c = info.split()
+        time[b] = 0
+
+    #이용시간 계산
+    for info in records:
+        a,b,c = info.split()
+        if b not in parking or parking[b] == "OUT": #방문 내역이 없거나 out이라면 무조건in
+            parking[b] = c #방문처리
+            name[b] = a
+        elif parking[b] =="IN": #이미 차가 있다면?
+            parking[b] = c
+            time[b] += diff_time(name[b],a)
+            name[b] = 0 #출도착 시간 초기화
+    #방문했는데 안나간 차량
+    for i in time :
+        if parking[i] == "IN":
+            time[i] += diff_time(name[i],"23:59")
+    
+    #요금 계산
+    result = []
+    for i in time:
+        result.append((i,price(time[i],fees))) #차번호와 요금
+    result.sort() #차번호대로 정렬
+    
+    answer = [x[1] for x in result]
+    return answer
+    
+    
+    
+    
+    
+    
+    
+    #풀이요령
+    아이디어는 쉽게 떠올릴 수 있는문제는 대부분 반복이 많은 빡구현 문제
+    그중에서 반복이 많은 것들은 함수로 만드는게 훨씬 편함
+    시간계산 돈계산 등 계산은 따로 
