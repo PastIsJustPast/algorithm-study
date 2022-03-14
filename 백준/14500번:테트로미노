@@ -1,0 +1,42 @@
+n,m = 5,5
+graph =[]
+for _ in range(n):
+    graph.append(list(map(int,input().split())))
+
+visited = [[0] * m for _ in range(n)]
+
+def dfs(x,y,index,total) : #이전 값을 받아야 하기 때문에 total필요
+    global answer #한x,y에서 최대가 되는 total을 구해도
+    if answer >= total + max_val * (3-index):
+        return
+    if index == 3 :
+        answer = max(answer,total) # 만약 total이 이전 최대값 보다 크면 전환
+        return
+    else :
+        dx = [0, 0, 1, -1]
+        dy = [1, -1, 0, 0]
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if nx <0 or nx >= n or ny <0 or ny >= m : continue
+            if visited[nx][ny] == 0:
+                if index == 1:  # 2칸까지 잡았을때만.
+                    visited[nx][ny] = 1  # 방문처리
+                    dfs(x, y, index + 1, total + graph[nx][ny])  # ㅗ 모양까지 잡아주기 위해서 재자리에서 탐색해줌
+                    visited[nx][ny] = 0
+                visited[nx][ny] = 1  # 방문처리
+                dfs(nx, ny, index + 1, total + graph[nx][ny])
+                visited[nx][ny] = 0
+
+
+answer = 0
+max_val = max(map(max,graph))
+
+#종이의 모든 값에 대해 실행
+for i in range(n):
+    for j  in range(m):
+        visited[i][j] = 1
+        dfs(i,j,0,graph[i][j])
+        visited[i][j] = 0
+
+print(answer)
